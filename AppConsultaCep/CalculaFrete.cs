@@ -82,13 +82,22 @@ namespace AppConsultaCep
 
         public void CalcularFreteEPrazoDeEntrega()
         {
-            string url = GerarUrl();
-
             XmlDocument doc = new XmlDocument();
-            doc.Load(url);
+            doc.Load(GerarUrl());
 
             XmlNodeList frete = doc.GetElementsByTagName("Valor");
             XmlNodeList prazoEntrega = doc.GetElementsByTagName("PrazoEntrega");
+            XmlNodeList erro = doc.GetElementsByTagName("Erro");
+
+            if (erro.Item(0).InnerText != "0")
+            {
+                if (erro.Item(0).InnerText == "-888")
+                {
+                    throw new ArgumentException("CEP inválido");
+                }
+
+                throw new ArgumentException("Não foi possível consultar o frete. Verifique os dados e tente novamente."); 
+            }
 
             ValorFrete = decimal.Parse(frete.Item(0).InnerText);
             PrazoEntrega = int.Parse(prazoEntrega.Item(0).InnerText);          

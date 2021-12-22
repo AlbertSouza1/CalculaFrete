@@ -5,36 +5,26 @@ namespace AppConsultaCep
 {
     public partial class FrmFrete : Form
     {
-        private void Buscar()
-        {                      
-            try
-            {
-                var calculaFrete = new CalculaFrete(cbTipoEnvio.SelectedIndex,
-                                                    txtCepOrigem.Text, txtCepDestino.Text,
-                                                    txtPeso.Text,
-                                                    cbFormato.SelectedIndex + 1,
-                                                    txtComprimento.Text,
-                                                    txtAltura.Text,
-                                                    txtLargura.Text,
-                                                    txtDiametro.Text,
-                                                    rbSimEmMaos.Checked,
-                                                    txtValorDeclarado.Text,
-                                                    rbSimAviso.Checked
-                                                    );
+        private void CalcularFreteEPrazo()
+        {
+            var calculaFrete = new CalculaFrete(cbTipoEnvio.SelectedIndex,
+                                                txtCepOrigem.Text, txtCepDestino.Text,
+                                                txtPeso.Text,
+                                                cbFormato.SelectedIndex + 1,
+                                                txtComprimento.Text,
+                                                txtAltura.Text,
+                                                txtLargura.Text,
+                                                txtDiametro.Text,
+                                                rbSimEmMaos.Checked,
+                                                txtValorDeclarado.Text,
+                                                rbSimAviso.Checked
+                                                );
 
-                calculaFrete.CalcularFreteEPrazoDeEntrega();
+            calculaFrete.CalcularFreteEPrazoDeEntrega();
 
-                txtValor.Text = calculaFrete.ValorFrete.ToString();
-                txtPrazo.Text = calculaFrete.PrazoEntrega.ToString();
-            }
-            catch (ArgumentException ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }           
+            txtValor.Text = calculaFrete.ValorFrete.ToString();
+            txtPrazo.Text = calculaFrete.PrazoEntrega.ToString();
+
         }
         public FrmFrete()
         {
@@ -49,7 +39,18 @@ namespace AppConsultaCep
 
         private void btnConsultar_Click(object sender, EventArgs e)
         {
-            Buscar();
+            try
+            {
+                CalcularFreteEPrazo();
+            }
+            catch (ArgumentException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
